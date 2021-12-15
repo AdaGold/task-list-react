@@ -1,13 +1,14 @@
 // 1.  Import React
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './Task.css';
 
 // 2.  Create a function that returns JSX
-const Task = () => {
-  const [isDone, setIsDone] = useState(false);
+const Task = ({ done, id, text }) => {
+  const [isDone, setIsDone] = useState(done);
   console.log(`isDone = ${isDone}`);
   const buttonClass = isDone ? 'tasks__item__toggle--completed' : '';
 
@@ -25,7 +26,7 @@ const Task = () => {
         className={`tasks__item__toggle ${buttonClass}`}
         onClick={toggleComplete}
       >
-        Mow the lawn
+        {text}
       </button>
       <button
         className="tasks__item__remove button alert pull-right"
@@ -37,6 +38,12 @@ const Task = () => {
       </button>
     </li>
   );
+};
+
+Task.propTypes = {
+  text: PropTypes.string.isRequired,
+  done: PropTypes.bool.isRequired,
+  id: PropTypes.number.isRequired,
 };
 
 // 3. Export the function
