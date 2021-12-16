@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import TaskList from './components/TaskList';
 
@@ -16,6 +16,23 @@ const TASKS = [
 ];
 
 const App = () => {
+  const [taskState, updateTaskState] = useState(TASKS);
+
+  const toggleTaskComplete = (id) => {
+    const newTasks = taskState.map((task) => {
+      if (task.id === id) {
+        return {
+          id: task.id,
+          text: task.text,
+          done: !task.done,
+        };
+      }
+      return task;
+    });
+
+    updateTaskState(newTasks);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -23,7 +40,7 @@ const App = () => {
       </header>
       <main>
         <div>
-          <TaskList tasks={TASKS} />
+          <TaskList completedCallback={toggleTaskComplete} tasks={taskState} />
         </div>
       </main>
     </div>

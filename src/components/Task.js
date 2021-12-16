@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './Task.css';
 
-const Task = ({ id, text, done }) => {
-  const [isDone, setIsDone] = useState(done);
-  const buttonClass = isDone ? 'tasks__item__toggle--completed' : '';
+const Task = ({ id, text, done, completedCallback }) => {
+  const buttonClass = done ? 'tasks__item__toggle--completed' : '';
 
   return (
     <li className="tasks__item">
       <button
         className={`tasks__item__toggle ${buttonClass}`}
-        onClick={() => setIsDone(!isDone)}
+        onClick={() => {
+          console.log('onClick called');
+          completedCallback(id);
+        }}
       >
         {text}
       </button>
@@ -21,9 +21,7 @@ const Task = ({ id, text, done }) => {
         className="tasks__item__remove button alert pull-right"
         data-testid={`delete button ${id}`}
       >
-        <i className="fa fa-times">
-          <FontAwesomeIcon icon={faTimes} />
-        </i>
+        X
       </button>
     </li>
   );
@@ -33,6 +31,7 @@ Task.propTypes = {
   id: PropTypes.number.isRequired,
   text: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
+  completedCallback: PropTypes.func.isRequired,
 };
 
 export default Task;
