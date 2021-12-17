@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './Task.css';
 
-const Task = ({ id, text, done, completedCallback }) => {
+const Task = ({ id, text, done, completedCallback, deleteTaskCallback }) => {
   const buttonClass = done ? 'tasks__item__toggle--completed' : '';
 
   return (
@@ -11,7 +11,6 @@ const Task = ({ id, text, done, completedCallback }) => {
       <button
         className={`tasks__item__toggle ${buttonClass}`}
         onClick={() => {
-          console.log('onClick called');
           completedCallback(id);
         }}
       >
@@ -20,6 +19,7 @@ const Task = ({ id, text, done, completedCallback }) => {
       <button
         className="tasks__item__remove button alert pull-right"
         data-testid={`delete button ${id}`}
+        onClick={() => deleteTaskCallback(id)}
       >
         X
       </button>
@@ -32,6 +32,7 @@ Task.propTypes = {
   text: PropTypes.string.isRequired,
   done: PropTypes.bool.isRequired,
   completedCallback: PropTypes.func.isRequired,
+  deleteTaskCallback: PropTypes.func.isRequired,
 };
 
 export default Task;

@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import TaskList from './components/TaskList';
 
-const TASKS = [
-  {
-    id: 1,
-    text: 'Mow the lawn',
-    done: false,
-  },
-  {
-    id: 2,
-    text: 'Cook Pasta',
-    done: true,
-  },
-];
-
 const App = () => {
-  const [taskState, updateTaskState] = useState(TASKS);
+  const [taskState, updateTaskState] = useState([]);
+
+  const getTasks = () => {
+    console.log('get tasks');
+    updateTaskState([
+      {
+        id: 27,
+        text: 'task 1',
+        done: false,
+      },
+    ]);
+  };
+
+  useEffect(getTasks, []);
 
   const toggleTaskComplete = (id) => {
     const newTasks = taskState.map((task) => {
@@ -33,6 +33,21 @@ const App = () => {
     updateTaskState(newTasks);
   };
 
+  const deleteTask = (id) => {
+    console.log(`Delete task ${id}`);
+    // const newTasks = [];
+
+    // for (let task of taskState) {
+    //   if (task.id !== id) {
+    //     newTasks.push(task);
+    //   }
+    // }
+
+    const newTasks = taskState.filter((task) => task.id !== id);
+
+    updateTaskState(newTasks);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -40,7 +55,11 @@ const App = () => {
       </header>
       <main>
         <div>
-          <TaskList completedCallback={toggleTaskComplete} tasks={taskState} />
+          <TaskList
+            completedCallback={toggleTaskComplete}
+            deleteTaskCallback={deleteTask}
+            tasks={taskState}
+          />
         </div>
       </main>
     </div>
