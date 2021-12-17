@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import Task from './Task';
 import './TaskList.css';
 
-const TaskList = ({ tasks, completedCallback }) => {
-  const taskComponents = tasks.map((task) => {
+// const TaskList = ({ tasks, completedCallback, deleteCallback }) => {
+const TaskList = (props) => {
+  const taskComponents = props.tasks.map((task) => {
     return (
       <Task
         key={task.id}
         id={task.id}
         text={task.text}
         done={task.done}
-        completedCallback={completedCallback}
+        completedCallback={props.completedCallback}
+        deleteCallback={props.deleteCallback}
       />
     );
   });
@@ -28,6 +30,7 @@ TaskList.propTypes = {
     })
   ).isRequired,
   completedCallback: PropTypes.func.isRequired,
+  deleteCallback: PropTypes.func.isRequired,
 };
 
 export default TaskList;
