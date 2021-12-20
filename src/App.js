@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 import TaskList from './components/TaskList';
+import NewTaskForm from './components/NewTaskForm';
 
 const URL = 'https://adas-task-list.herokuapp.com';
 
@@ -9,7 +10,6 @@ const App = () => {
   const [taskState, updateTaskState] = useState([]);
 
   const getTasks = () => {
-    console.log('get tasks');
     // Get stuff from API
     axios
       .get(`${URL}/tasks`)
@@ -83,6 +83,33 @@ const App = () => {
       });
   };
 
+  const addTask = (task) => {
+    let done = null;
+    if (task.done) {
+      done = new Date();
+    }
+
+    axios
+      .post(`${URL}/tasks`, {
+        title: task.text,
+        // eslint-disable-next-line camelcase
+        completed_at: done,
+        description: '',
+      })
+      .then((response) => {
+        // console.log(response.data);
+        const newTasks = [...taskState];
+        task.id = response.data.task.id;
+        newTasks.push(task);
+        updateTaskState(newTasks);
+        // Alternative way to update the state
+        // getTasks();
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -95,6 +122,9 @@ const App = () => {
             deleteTaskCallback={deleteTask}
             tasks={taskState}
           />
+        </div>
+        <div>
+          <NewTaskForm onSubmitCallback={addTask} />
         </div>
       </main>
     </div>
